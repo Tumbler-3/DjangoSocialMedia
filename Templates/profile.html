@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social media</title>
+</head>
+<body>
+    <div>
+        @{{profile.username}}
+        {{profile.name}}
+        {{profile.email}}
+        {{profile.phone}}
+    </div>
+    {% if user == profile %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" class="button" value="Change">
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>
