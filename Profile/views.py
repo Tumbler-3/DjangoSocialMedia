@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from User.models import CustomUser
+from Profile.models import PostModel
 from Profile.forms import ProfileChangeForm
 
 
@@ -19,10 +22,10 @@ def profile_view(request, username):
     if request.method == 'GET':
         form = ProfileChangeForm
         return render(request, 'profile.html', context={
-            'profile': profile, 
-            'form': form, 
+            'profile': profile,
+            'form': form,
             'user': None if request.user.is_anonymous else request.user
-            })
+        })
 
     if request.method == 'POST':
         form = ProfileChangeForm(data=request.POST)
@@ -39,3 +42,21 @@ def profile_view(request, username):
             profile.save()
 
         return redirect('/')
+
+
+def post_view(request, id, username):
+    post = PostModel.objects.get(id=id)
+    user = None if request.user.is_anonymous else request.user
+
+    if request.method == 'GET':
+        return render(request, 'post.html', context={
+            'user':user, 
+            'post': post,
+            })
+    if request.method == 'POST':
+        liked = post.liked
+        if user in liked.all():
+            liked.remove(user)
+        else:
+            liked.add(user)
+        return HttpResponseRedirect(reverse('post-view', args=[username, id]))
