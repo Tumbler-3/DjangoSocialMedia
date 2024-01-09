@@ -50,13 +50,26 @@ def post_view(request, id, username):
 
     if request.method == 'GET':
         return render(request, 'post.html', context={
-            'user':user, 
+            'user': user,
             'post': post,
-            })
+        })
     if request.method == 'POST':
+        reposted = post.reposted
         liked = post.liked
-        if user in liked.all():
-            liked.remove(user)
-        else:
+        saved = post.saved
+        if 'Like' in request.POST:
             liked.add(user)
+        elif 'Remove like' in request.POST:
+            liked.remove(user)
+        
+        if 'Repost' in request.POST:
+            reposted.add(user)
+        elif 'Remove repost' in request.POST:
+            reposted.remove(user)
+            
+        if 'Save' in request.POST:
+            saved.add(user)
+        elif 'Remove save' in request.POST:
+            saved.remove(user)
+            
         return HttpResponseRedirect(reverse('post-view', args=[username, id]))

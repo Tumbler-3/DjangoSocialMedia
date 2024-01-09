@@ -7,14 +7,30 @@
 </head>
 <body>
     {{post.text}}
-    {{post.likes}}
+    likes {{post.likes}}
+    reposts {{post.reposts}}
+    responses {{post.responses}}
+    saves {{post.saves}}
     <form action="" method="POST">
         {% csrf_token %}
         {% if user is not None %}
+
             {% if user not in post.liked.all %}
-                <button type="submit" class="button" value="Like">Like</button>
+                <button type="submit" class="button" name="Like">Like</button>
             {%elif user  in post.liked.all %}
-                <button type="submit" class="button" value="Remove like">Remove like</button>
+                <button type="submit" class="button" name="Remove like">Remove like</button>
+            {% endif %}
+
+            {% if user not in post.reposted.all %}
+                <button type="submit" class="button" name="Repost">Repost</button>
+            {%elif user  in post.reposted.all %}
+                <button type="submit" class="button" name="Remove repost">Remove repost</button>
+            {% endif %}
+
+            {% if user not in post.saved.all %}
+                <button type="submit" class="button" name="Save">Save</button>
+            {%elif user  in post.saved.all %}
+                <button type="submit" class="button" name="Remove save">Remove save</button>
             {% endif %}
         {% endif %}
     </form>
