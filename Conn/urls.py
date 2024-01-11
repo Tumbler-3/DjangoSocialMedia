@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
 from User.views import registartion_view, login_view, logout_view, main
 from Profile.views import profile_view, post_view
+from django.conf import settings
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main),
@@ -25,4 +30,4 @@ urlpatterns = [
     path('logout/', logout_view),
     path('<str:username>/', profile_view),
     path('<str:username>/status/<int:id>', post_view, name='post-view'),
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

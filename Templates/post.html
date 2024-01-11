@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +9,9 @@
 </head>
 <body>
     {{post.text}}
+    {% if post.pic %}
+    <img src="{{post.pic.url}}">
+    {% endif %}
     likes {{post.likes}}
     reposts {{post.reposts}}
     responses {{post.responses}}
